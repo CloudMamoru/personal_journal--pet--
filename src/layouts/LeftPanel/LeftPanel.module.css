@@ -1,0 +1,6 @@
+.leftPanel {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
