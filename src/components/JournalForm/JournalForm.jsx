@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../Button/Button';
 import styles from './JournalForm.module.css';
+import cn from 'classnames';
 
 export const JournalForm = (props) => {
 	const [formValidState, setFormValidState] = useState({
@@ -18,7 +19,7 @@ export const JournalForm = (props) => {
 		// Проверка на валидность форм: 
 		if (!formProps.title?.trim().length) {
 			setFormValidState(state => ({ ...state, title: false }));
-			isFormValid = false;
+			isFormValid = false; 
 		} else {
 			setFormValidState(state => ({ ...state, title: true }));
 		}
@@ -46,12 +47,30 @@ export const JournalForm = (props) => {
 	return (
 		<>
 			<form className={styles.journalForm} onSubmit={addJournalItem}> 
-				<input type="text" name="title" className={`${!formValidState.title && styles.invalid}`} />
-				<input type="date" name="date" className={`${!formValidState.date && styles.invalid}`}/>
-				<input type="text" name='tag'/>
-				<textarea name="text" id="" cols="30" rows="10" className={`${!formValidState.text && styles.invalid}`}></textarea>
-				<Button text='Сохранить'/>
-			</form> 
+				<div>
+					<input type="text" name="title" className={cn(styles.input, styles.title, {
+						[styles.invalid]: !formValidState.title,
+						[styles.voidInput]: true
+					})} />
+				</div>
+				<div className={styles.wrapper}>
+					<img src='/calendar.svg' alt='calendar' />
+					<p className={styles.blockName} >Дата</p>
+					<input type="date" name="date" className={cn(styles.input, styles.date, {
+						[styles.invalid]: !formValidState.date
+					})} />
+				</div>
+				<div className={styles.wrapper}>
+					<img src='/folder.svg' alt='calendar' />
+					<p className={styles.blockName}>Метки</p>
+					<input type="text" name='tag' className={cn(styles.input, styles.tag)} />
+				</div>
+				<textarea name="text" id="" cols="30" rows="10" className={cn(styles.input, styles.text, {
+					[styles.invalid]: !formValidState.text,
+					[styles.voidInput]: true
+				})}/>
+				<Button text='Сохранить' className={styles.formButton} />
+			</form>  
 		</>
 	);
 };
