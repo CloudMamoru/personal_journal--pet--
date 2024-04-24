@@ -1,14 +1,14 @@
-import './JournalItem.css';
+import styles from './JournalItem.module.css';
 
 export const JournalItem = (props) => {  
 	const formatDate = new Intl.DateTimeFormat('ru-Ru').format(props.date);
 
 	return (
 		<>
-			<h2 className="journal-item__header">{props.title}</h2>
-			<h2 className="journal-item__body">
-				<div className="journal-item__date">{formatDate}</div>
-				<div className="journal-item__text">{props.text}</div>
+			<h2 className={styles.journalItemHeader}>{props.title}</h2>
+			<h2 className={styles.journalItemBody}>
+				<div className={styles.journalItemDate}>{formatDate}</div>
+				<div className={styles.journalItemText}>{props.text}</div>
 			</h2>
 		</>
 	);

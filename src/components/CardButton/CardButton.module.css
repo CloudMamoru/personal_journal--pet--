@@ -1,4 +1,4 @@
-.card-button {
+.cardButton {
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.03);
   color: #FFF;
@@ -8,9 +8,10 @@
   text-align: start;
   display: block;
   width: 100%;
+  margin-bottom: 20px;
 }
  
-.card-button:hover {
+.cardButton:hover {
   background: rgba(255, 255, 255, 0.10);
 }
  
