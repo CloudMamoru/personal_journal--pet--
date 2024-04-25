@@ -9,13 +9,8 @@
   color: rgb(255, 255, 255);
 }
 
-.invalid {
-  border: 2px solid red;
-  background: rgb(255, 69, 69);
-}
-
 .input {
-  background: rgb(24, 24, 24);
+  background: none;
   border: none;
 }
 
@@ -82,4 +77,9 @@
 
 .voidInput {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.invalid {
+  border: 2px solid red;
+  background: rgb(152, 48, 48);
 }

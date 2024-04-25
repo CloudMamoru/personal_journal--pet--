@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { CardButton } from './components/CardButton/CardButton';
 import Header from './components/Header/Header';
@@ -10,20 +10,26 @@ import Body from './layouts/Body/Body';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
 
 function App() {
-	const [posts, setPosts] = useState([
-		{
-			id: 1,
-			title: 'Подготовка к обновлению курсов',
-			text: 'Сегодня провёл весь день за...',
-			date: new Date()
-		},
-		{
-			id: 2, 
-			title: 'Поход в горы',
-			text: 'Чиппи чиппи Чаппа Чаппа',
-			date: new Date()
+	const [posts, setPosts] = useState([]);
+
+	// Чтение данных из localStorage
+	useEffect(() => {
+		const data = JSON.parse(localStorage.getItem('data'));
+
+		if (data) {
+			setPosts(data.map(post => ({
+				...post,
+				date: new Date(post.date)
+			})));
 		}
-	]);
+	}, []);
+
+	// Сохранение данных на localStorage
+	useEffect(() => {
+		if (posts.length) {
+			localStorage.setItem('data', JSON.stringify(posts));
+		}
+	}, [posts]);
 
 	const addPost = ({ title, text, date }) => {
 		const newDate = new Date(date);
