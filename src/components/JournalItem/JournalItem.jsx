@@ -1,7 +1,8 @@
 import styles from './JournalItem.module.css';
 
 export const JournalItem = (props) => {  
-	const formatDate = new Intl.DateTimeFormat('ru-Ru').format(props.date);
+	const formatDate = props.date instanceof Date && !isNaN(props.date) ? new Intl.DateTimeFormat('ru-Ru').format(props.date) : 'Invalid Date';
+
 
 	return (
 		<>
