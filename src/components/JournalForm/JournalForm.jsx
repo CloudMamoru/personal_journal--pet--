@@ -110,7 +110,7 @@ export const JournalForm = ({addPost}) => {
 						[styles.invalid]: !isValid.text,
 						[styles.voidInput]: true
 					})}/>
-				<Button text='Сохранить' className={styles.formButton} />
+				<Button className={styles.formButton}>Сохранить</Button>
 			</form>  
 		</>
 	);
