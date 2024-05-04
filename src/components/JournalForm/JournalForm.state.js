@@ -31,7 +31,7 @@ export function formReducer(state, action) {
 			isFormReadyToSubmit: titleValidity && dateValidity && textValidity
 		};
 	}
-	case 'SET_VALUES': {
+	case 'SET_VALUE': {
 		const newValues = {
 			...state.values,
 			[action.payload.name]: action.payload.value
@@ -40,6 +40,15 @@ export function formReducer(state, action) {
 	}
 	case 'RESET_VALUES': {
 		return {...state, values: INITIAL_STATE.values, isFormReadyToSubmit: false};
+	}
+	case 'SET_VALUES_FROM_SELECTED_POST': {
+		const newValues = {
+			title: action.payload.title,
+			date: action.payload.date ? new Date(action.payload.date).toISOString().split('T')[0] : '',
+			tag: action.payload.tag === undefined ? '' : action.payload.tag,
+			text: action.payload.text
+		};		
+		return {...state, values: newValues};
 	}
 	}
 }

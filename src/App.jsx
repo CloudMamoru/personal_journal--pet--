@@ -8,6 +8,7 @@ import JournalList from './components/JournalList/JournalList';
 import Body from './layouts/Body/Body';
 import LeftPanel from './layouts/LeftPanel/LeftPanel';
 import { useLocalStorage } from './hooks/use-localstorage.hook';
+import { useMemo, useState } from 'react';
 
 function mapPosts(posts) {
 	if (!posts) {
@@ -21,14 +22,45 @@ function mapPosts(posts) {
 
 function App() {
 	const [posts, setPosts] = useLocalStorage('data');
+	const [selectedIdPost, setSelectedIdPost] = useState();
+
+	const selectedPost = useMemo(() => {
+		if (selectedIdPost !== undefined) {
+			return posts.filter(el => el.id === selectedIdPost);
+		}
+		return [{
+			title: '',
+			date: '',
+			tag: '',
+			text: ''
+		}];
+	}, [posts, selectedIdPost]);
 
 	const addPost = (post) => {
-		setPosts([...mapPosts(posts), {
-			id: Math.max(...posts.map(el => el.id), 0) + 1,
-			title: post.title,
-			date: new Date(post.date),
-			text: post.text
-		}]);
+		if (selectedIdPost === undefined) {
+			setPosts([...mapPosts(posts), {
+				id: Math.max(...posts.map(el => el.id), 0) + 1,
+				title: post.title,
+				date: new Date(post.date),
+				text: post.text
+			}]);
+		} else {
+			console.log(post);
+			setPosts([...mapPosts(posts).filter(el => el.id !== selectedIdPost), {
+				id: selectedIdPost,
+				title: post.title,
+				date: new Date(post.date),
+				text: post.text
+			}]);
+			setSelectedIdPost(undefined);
+		}
+	};
+
+	const deletePost = () => {
+		if (selectedIdPost) {
+			setPosts([...mapPosts(posts).filter(el => el.id !== selectedIdPost)]);
+			setSelectedIdPost(undefined);
+		}
 	};
 
 	const sortPosts = (a, b) => {
@@ -42,10 +74,10 @@ function App() {
 		<div className='app'>
 			<LeftPanel>
 				<Header /> 
-				<JournalAddButton />
+				<JournalAddButton setSelectedIdPost={setSelectedIdPost} />
 				<JournalList>
 					{ posts?.length ? posts.sort(sortPosts).map(post => (
-						<CardButton key={post.id}> 
+						<CardButton key={post.id} id={post.id} setSelectedIdPost={setSelectedIdPost} > 
 							<JournalItem
 								title={post.title}
 								date={post.date}
@@ -57,7 +89,7 @@ function App() {
 				</JournalList>
 			</LeftPanel>
 			<Body>
-				<JournalForm addPost={addPost} />
+				<JournalForm addPost={addPost} deletePost={deletePost} post={selectedPost} />
 			</Body>
 		</div>
 	);

@@ -4,12 +4,16 @@ import styles from './JournalForm.module.css';
 import cn from 'classnames';
 import { formReducer, INITIAL_STATE } from './JournalForm.state';
 
-export const JournalForm = ({addPost}) => {
+export const JournalForm = ({addPost, deletePost, post}) => {
 	const [formState, dispatchFormState] = useReducer(formReducer, INITIAL_STATE);
 	const { isValid, values, isFormReadyToSubmit } = formState;
 	const titleRef = useRef(); 
 	const dateRef = useRef();
 	const textRef = useRef();
+
+	useEffect(() => {
+		dispatchFormState({type: 'SET_VALUES_FROM_SELECTED_POST', payload: post[0]});
+	}, [post]);
 
 	const focusError = (isValid) => {
 		switch (true) {
@@ -37,7 +41,6 @@ export const JournalForm = ({addPost}) => {
 	}, [isValid]);
 
 
-
 	useEffect(() => {
 		if (isFormReadyToSubmit) {
 			addPost(values);
@@ -50,9 +53,15 @@ export const JournalForm = ({addPost}) => {
 		dispatchFormState({type: 'SUBMIT'});
 	};
 
+	const deleteJournalItem = (event) => {
+		event.preventDefault(); 
+		dispatchFormState({ type: 'RESET_VALUES' });
+		deletePost();
+	};
+
 	const setValues = (e) => {
 		dispatchFormState({
-			type: 'SET_VALUES',
+			type: 'SET_VALUE',
 			payload: {
 				name: e.target.name,
 				value: e.target.value
@@ -63,7 +72,7 @@ export const JournalForm = ({addPost}) => {
 	return (
 		<>
 			<form className={styles.journalForm} onSubmit={addJournalItem}> 
-				<div>
+				<div className={styles.firstInput}>
 					<input
 						ref={titleRef}
 						type="text"
@@ -74,6 +83,7 @@ export const JournalForm = ({addPost}) => {
 							[styles.invalid]: !isValid.title,
 							[styles.voidInput]: true
 						})} /> 
+					<img className={styles.imgButton} src='/delete.svg' alt='delete' onClick={deleteJournalItem} />
 				</div>
 				<div className={styles.wrapper}>
 					<img src='/calendar.svg' alt='calendar' />

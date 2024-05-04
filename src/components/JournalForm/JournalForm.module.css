@@ -83,3 +83,16 @@
   border: 2px solid red;
   background: rgb(152, 48, 48);
 }
+
+.firstInput {
+  display: flex;
+}
+
+.imgButton {
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.imgButton:hover {
+  transform: scale(1.1);
+}
